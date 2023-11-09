@@ -128,6 +128,12 @@ resource "aws_spot_instance_request" "efs_testing" {
   instance_interruption_behavior = "terminate"
   wait_for_fulfillment           = true
 
+  user_data = <<-EOL
+  #!/bin/bash -xe
+  dnf -y upgrade
+  dnf -y install /usr/bin/rpmbuild /usr/bin/sealert /usr/bin/sepolicy efs-utils vim "@Development Tools"
+  EOL
+
   tags = local.tags
 }
 
