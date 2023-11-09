@@ -55,7 +55,7 @@ data "aws_ami_ids" "fedora" {
 
   filter {
     name   = "name"
-    values = ["Fedora-Cloud-Base-38-*x86_64-hvm-*-*-*-*-*"]
+    values = ["Fedora-Cloud-Base-39-*x86_64-hvm-*-*-*-*-*"]
   }
 
   include_deprecated = false
@@ -120,7 +120,7 @@ resource "aws_security_group" "efs_target" {
 resource "aws_spot_instance_request" "efs_testing" {
   ami                            = data.aws_ami_ids.fedora.ids[0]
   spot_price                     = "1"
-  instance_type                  = "c7a.medium"
+  instance_type                  = "t3a.small"
   key_name                       = aws_key_pair.my_key_pair.key_name
   vpc_security_group_ids         = [aws_security_group.efs_instance.id]
   availability_zone              = data.aws_availability_zones.available.names[0]
