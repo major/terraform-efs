@@ -130,8 +130,12 @@ resource "aws_spot_instance_request" "efs_testing" {
 
   user_data = <<-EOL
   #!/bin/bash -xe
+  echo "max_parallel_downloads=20" >> /etc/dnf/dnf.conf
+  echo "fastestmirror=True" >> /etc/dnf/dnf.conf
   dnf -y upgrade
-  dnf -y install /usr/bin/rpmbuild /usr/bin/sealert /usr/bin/sepolicy efs-utils vim "@Development Tools"
+  dnf -y install dnf-plugins-core vim
+  dnf -y copr enable mhayden/efs-utils 
+  dnf -y install efs-utils
   EOL
 
   tags = local.tags
